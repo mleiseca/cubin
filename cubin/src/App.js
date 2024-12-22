@@ -9,8 +9,7 @@ function App() {
   const [cube, setCube] = useState(null);
   const [count, setCount] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
-  const [running, setRunning] = useState(false);
-  
+  const [running, setRunning] = useState(false);  
 
   function toggleRunning() {
     console.log("toggle running");
@@ -18,7 +17,9 @@ function App() {
   }
 
   useEffect(() => {
-    setCube(new Cube());
+    let c = new Cube()
+    c.scramble();
+    setCube(c);
   }, []);
 
   useEffect(() => {
@@ -26,7 +27,9 @@ function App() {
     if (!running){
       return;
     }
- 
+
+    // const intervalId = setTimeout(() => {
+
     const intervalId = setInterval(() => {
 
       // console.log("running");
@@ -40,6 +43,7 @@ function App() {
         // console.log("correct count", correct);
 
         setCorrectCount(correct);
+  
         if (correct === 54) {
           setRunning(false);
           clearInterval(intervalId);
@@ -91,7 +95,7 @@ function App() {
           {count} moves
         </div>
         <div>
-          {correctCount} correct
+          {correctCount} correct (best: {cube.highCount})
         </div>
         <div>
           <div onClick={() => toggleRunning()}>

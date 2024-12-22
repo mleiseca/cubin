@@ -2,6 +2,7 @@
 import { Cube} from './Cube.js'
 
 let cube = new Cube()
+cube.scramble();
 let solved = false;
  
 
@@ -20,8 +21,8 @@ while(!solved) {
         high = correct
     }
     if (cube.moveCount % 1000000 === 0) {
-        console.log(`${cube.moveCount} moves, ${correct} correct (${high} high)`)
+        console.log(`${cube.moveCount} moves, ${correct} correct (${cube.highCount} high)`)
     }
 }
-
+// 2714000000
 console.log(`Solved in ${cube.moveCount} moves`)

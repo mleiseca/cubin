@@ -21,19 +21,32 @@ export const Cube = class {
 
         this.sides = [white, red, green, orange, blue, yellow];
 
-        this.moveCount = 0
+        this.moveCount = 0;
+        this.highCount = 0;
     }
     randomMove() {
-        // this.sides[1].move();
+        // this.sides[0].movePrime();
 
-        this.sides[randomIntFromInterval(0,5)].move();
+        if(randomIntFromInterval(0,1) === 0) {
+            this.sides[randomIntFromInterval(0,5)].move();
+        } else {
+            this.sides[randomIntFromInterval(0,5)].movePrime();
+        }
         this.moveCount++;
 
+    }
+    scramble() {
+        for (let i =0; i<10; i++){
+            this.randomMove();
+        }
     }
     correctCount() {
         let total = 0 
         for (let i = 0; i < 6; i++) {
             total += this.sides[i].correctCount()
+        }
+        if (total > this.highCount) {
+            this.highCount = total;
         }
         return total;
     }
@@ -118,13 +131,11 @@ const Side = class {
     move() {
         // console.log("updating to");
         const currentValues = [
-        this.left.adjacentTo(this),
-        this.right.adjacentTo(this),
-        this.up.adjacentTo(this),
-        this.down.adjacentTo(this),
+            this.left.adjacentTo(this),
+            this.right.adjacentTo(this),
+            this.up.adjacentTo(this),
+            this.down.adjacentTo(this),
         ]
-        // console.log("updating to", currentValues);
-
         this.left.updateTo(this, currentValues[3]);
         this.right.updateTo(this, currentValues[2]);
         this.up.updateTo(this, currentValues[0]);
@@ -141,16 +152,32 @@ const Side = class {
         this.rows[2][0] = tempRows[2][2];
         this.rows[2][1] = tempRows[1][2];
         this.rows[2][2] = tempRows[0][2];
-        // switch (style){
-        //   case 0: 
-            
-
-        // }
-
     }
 
-// foo() {
-//   return 'bar';
-// },
+    movePrime() {
+        const currentValues = [
+            this.left.adjacentTo(this),
+            this.right.adjacentTo(this),
+            this.up.adjacentTo(this),
+            this.down.adjacentTo(this),
+        ]
+        this.left.updateTo(this, currentValues[2]);
+        this.right.updateTo(this, currentValues[3]);
+        this.up.updateTo(this, currentValues[1]);
+        this.down.updateTo(this, currentValues[0]);
+
+        const tempRows = [this.rows[0].slice(), this.rows[1].slice(), this.rows[2].slice()];
+
+        this.rows[0][0] = tempRows[0][2];
+        this.rows[0][1] = tempRows[1][2];
+        this.rows[0][2] = tempRows[2][2];
+        this.rows[1][0] = tempRows[0][1];
+        // this.rows[1][1] = tempRows[][];
+        this.rows[1][2] = tempRows[2][1];
+        this.rows[2][0] = tempRows[0][0];
+        this.rows[2][1] = tempRows[1][0];
+        this.rows[2][2] = tempRows[2][0];
+    }
+
 
 };
